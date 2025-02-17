@@ -40,6 +40,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
 
   build-electron:
     runs-on: ${{ matrix.os }}
@@ -71,7 +72,7 @@ jobs:
         with:
           name: electron-app-${{ matrix.os }}
           path: |
-            dist_electron/*.exe
-            dist_electron/*.dmg
-            dist_electron/*.AppImage
-            dist_electron/*.snap
+            dist-electron/*.exe
+            dist-electron/*.dmg
+            dist-electron/*.AppImage
+            dist-electron/*.snap
