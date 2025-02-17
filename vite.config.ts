@@ -43,9 +43,18 @@ export default defineConfig(({ command }) => {
           },
         },
       }),
+      electron({ // 預加載腳本插件 (新增)
+        entry: 'electron/preload.ts',
+        vite: {
+          build: {
+            sourcemap,
+            outDir: 'dist-electron', // 預加載腳本輸出目錄 (與主進程相同)
+          },
+        },
+      }),
     ],
     build: {
-      outDir: 'dist',
+      outDir: 'dist', // Web 應用輸出目錄
       emptyOutDir: true,
       sourcemap: sourcemap,
     },
