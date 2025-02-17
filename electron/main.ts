@@ -11,7 +11,7 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       preload: process.env.NODE_ENV === 'development'
-        ? join(__dirname, '../electron/preload.ts')  // 開發模式下使用 .ts 文件
+        ? join(__dirname, 'preload.ts')  // Corrected dev path
         : join(__dirname, 'preload.js'),  // 生產模式下使用編譯後的 .js 文件
     },
   });

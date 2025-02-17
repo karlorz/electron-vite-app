@@ -24,7 +24,7 @@ export default defineConfig(({ command, mode }) => {
       'process.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION),
     },
     plugins: [
-      react(),
+      // react(), // 暫時禁用 react() 插件
       electron({
         entry: 'electron/main.ts',
         onstart({ startup }) {
