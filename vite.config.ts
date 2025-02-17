@@ -1,20 +1,26 @@
+/// <reference types="vite/client" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import electron from 'vite-plugin-electron';
 import { resolve } from 'node:path';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({ command, mode }) => {
   const isServe = command === 'serve';
   const isBuild = command === 'build';
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
+  const isProduction = mode === 'production';
 
   return {
-    base: process.env.NODE_ENV === 'production' ? '/electron-vite-app/' : '/',
+    base: isProduction ? '/electron-vite-app/' : '/',
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),
       },
+    },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION),
     },
     plugins: [
       react(),

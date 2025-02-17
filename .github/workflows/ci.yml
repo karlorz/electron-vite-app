@@ -51,7 +51,8 @@ jobs:
           NODE_ENV: test
 
       - name: Build web app
-        run: npm run build
+        shell: bash
+        run: npm run build --mode production
         env:
           NODE_ENV: production
           VITE_APP_VERSION: ${{ github.sha }}
@@ -91,7 +92,8 @@ jobs:
         run: npm ci
 
       - name: Build Electron app
-        run: npm run build:electron
+        shell: bash
+        run: npm run build:electron --mode production
         env:
           NODE_ENV: production
           VITE_APP_VERSION: ${{ github.sha }}
