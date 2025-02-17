@@ -5,13 +5,14 @@ import electron from 'vite-plugin-electron';
 import { resolve } from 'node:path';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({ command, mode }) => {
   const isServe = command === 'serve';
   const isBuild = command === 'build';
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
+  const isElectron = process.env.NODE_ENV === 'development';
 
   return {
-    base: process.env.NODE_ENV === 'production' ? '/electron-vite-app/' : '/',
+    base: isElectron ? './' : (process.env.NODE_ENV === 'production' ? '/electron-vite-app/' : '/'),
     root: process.cwd(),
     resolve: {
       alias: {
