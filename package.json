@@ -4,6 +4,14 @@
   "description": "Electron Vite React Boilerplate",
   "main": "dist-electron/main.js",
   "homepage": "https://karlorz.github.io/electron-vite-app",
+  "author": {
+    "name": "karlorz",
+    "email": "me@kardigi.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlorz/electron-vite-app.git"
+  },
   "scripts": {
     "dev": "vite",
     "dev:electron": "cross-env NODE_ENV=development vite",
