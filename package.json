@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "vite",
     "dev:electron": "cross-env NODE_ENV=development vite",
-    "build": "tsc && vite build",
-    "build:electron": "tsc && vite build && electron-builder",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "build:electron": "tsc -p tsconfig.build.json && vite build && electron-builder",
     "preview": "vite preview",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",

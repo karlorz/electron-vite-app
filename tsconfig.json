@@ -23,10 +23,21 @@
       "react",
       "react-dom",
       "jest",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "vite/client"
     ],
     "jsxImportSource": "react"
   },
-  "include": ["src", "electron", "jest.config.js", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "src",
+    "electron",
+    "vite.config.ts",
+    "jest.config.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-electron"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
