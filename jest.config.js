@@ -11,15 +11,19 @@ module.exports = {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
       {
-        tsconfig: 'tsconfig.json'
+        tsconfig: './tsconfig.json',
+        isolatedModules: true,
+        diagnostics: false
       }
     ]
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  globals: {
-    'ts-jest': {
-      isolatedModules: true
-    }
-  }
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/dist-electron/'],
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/main.tsx',
+    '!src/electron.d.ts',
+    '!src/**/*.d.ts'
+  ]
 };
