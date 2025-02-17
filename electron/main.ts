@@ -22,7 +22,7 @@ async function createWindow() {
     try {
       await mainWindow.loadURL('http://localhost:5173');
       mainWindow.webContents.openDevTools();
-      
+
       // Install React DevTools
       try {
         await installExtension(REACT_DEVELOPER_TOOLS);
@@ -41,6 +41,23 @@ async function createWindow() {
       console.error('Failed to load app:', err);
     }
   }
+
+  mainWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    console.log('Renderer process console message:', message);
+  });
+
+  mainWindow.webContents.on('unresponsive', () => {
+    console.log('Renderer process unresponsive');
+  });
+
+  mainWindow.webContents.on('crashed', () => {
+    console.log('Renderer process crashed');
+  });
+
+  mainWindow.webContents.on('render-process-gone', (event, details) => {
+    console.log('Renderer process gone:', details);
+  });
+
 
   // Set up IPC handlers
   setupIpcHandlers();
