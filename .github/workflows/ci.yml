@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -15,10 +20,10 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -38,6 +43,7 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_APP_VERSION: ${{ github.sha }}
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -46,8 +52,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
   build-electron:
+    needs: build-and-deploy
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -56,10 +65,10 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -71,9 +80,10 @@ jobs:
         run: npm run build:electron
         env:
           NODE_ENV: production
+          VITE_APP_VERSION: ${{ github.sha }}
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload Electron artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: electron-app-${{ matrix.os }}
           path: |
@@ -81,3 +91,4 @@ jobs:
             dist-electron/*.dmg
             dist-electron/*.AppImage
             dist-electron/*.snap
+          compression-level: 9
