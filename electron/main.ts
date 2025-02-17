@@ -10,9 +10,7 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: process.env.NODE_ENV === 'development'
-        ? join(__dirname, 'preload.ts')  // Corrected dev path
-        : join(__dirname, 'preload.js'),  // 生產模式下使用編譯後的 .js 文件
+      preload: join(__dirname, '../dist-electron/preload.js'),  // updated preload file reference
     },
   });
 
