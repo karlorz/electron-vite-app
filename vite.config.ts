@@ -10,7 +10,7 @@ export default defineConfig(({ command }) => {
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
 
   return {
-    base: process.env.GITHUB_ACTIONS ? '/electron-vite-app/' : '/',
+    base: process.env.NODE_ENV === 'production' ? '/electron-vite-app/' : '/',
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),
