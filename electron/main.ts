@@ -61,12 +61,11 @@ async function createWindow() {
     console.log('Renderer process unresponsive');
   });
 
-  mainWindow.webContents.on('crashed', () => {
-    console.log('Renderer process crashed');
-  });
-
   mainWindow.webContents.on('render-process-gone', (event, details) => {
     console.log('Renderer process gone:', details);
+    if (details.reason === 'crashed') {
+      console.log('Renderer process crashed');
+    }
   });
 
 
