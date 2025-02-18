@@ -8,16 +8,27 @@ export default defineConfig(({ command }) => {
   
   return {
     base,
+    build: {
+      outDir: isElectron ? 'dist-electron' : 'dist',
+      rollupOptions: {
+        input: {
+          main: isElectron ? 'electron/main.ts' : 'index.html'
+        }
+      }
+    },
     plugins: [
       react(),
       isElectron && electron({
         main: {
           entry: 'electron/main.ts',
+          onstart({ startup }) {
+            startup();
+          },
         },
         preload: {
           input: 'electron/preload.ts',
         }
       })
-    ]
+    ].filter(Boolean)
   };
 });
