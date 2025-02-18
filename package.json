@@ -1,6 +1,7 @@
 {
   "name": "electron-vite-react",
   "version": "1.0.0",
+  "type": "module",
   "description": "Electron Vite React Boilerplate",
   "main": "dist-electron/main.js",
   "homepage": "https://karlorz.github.io/electron-vite-app",
@@ -16,7 +17,7 @@
     "dev": "vite",
     "dev:electron": "cross-env ELECTRON=true NODE_ENV=development vite",
     "build": "tsc -p tsconfig.build.json && vite build",
-    "build:electron": "cross-env ELECTRON=true NODE_ENV=production tsc -p tsconfig.build.json && vite build && electron-builder",
+    "build:electron": "cross-env ELECTRON=true NODE_ENV=production vite build && tsc -p electron/tsconfig.electron.json && electron-builder",
     "preview": "vite preview",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -35,7 +36,7 @@
       "dist-electron/**/*"
     ],
     "extraMetadata": {
-      "main": "dist-electron/electron/main.js"
+      "main": "dist-electron/main.js"
     },
     "mac": {
       "category": "public.app-category.developer-tools"

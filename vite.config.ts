@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
-import electron from 'vite-plugin-electron/simple';
 import react from '@vitejs/plugin-react';
+import * as electronPlugin from 'vite-plugin-electron/simple';
 
 export default defineConfig(({ command }) => {
   const isElectron = process.env.ELECTRON === 'true';
@@ -9,16 +9,17 @@ export default defineConfig(({ command }) => {
   return {
     base,
     build: {
-      outDir: isElectron ? 'dist-electron' : 'dist',
+      outDir: 'dist',
+      emptyOutDir: true,
       rollupOptions: {
         input: {
-          main: isElectron ? 'electron/main.ts' : 'index.html'
+          main: 'index.html'
         }
       }
     },
     plugins: [
       react(),
-      isElectron && electron({
+      isElectron && electronPlugin.default({
         main: {
           entry: 'electron/main.ts',
           onstart({ startup }) {

@@ -1,18 +1,12 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'node:path';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import * as electronDevtools from 'electron-devtools-installer';
 
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Determine preload path based on environment
+// Determine preload path and environment
 const isDev = process.env.NODE_ENV === 'development' && process.env.ELECTRON === 'true';
 const preloadPath = isDev
-  ? join(__dirname, 'preload.js')
-  : join(__dirname, 'preload.js');
+  ? join(process.cwd(), 'dist-electron', 'preload.js')
+  : join(process.cwd(), 'dist-electron', 'preload.js');
 
 async function createWindow() {
   // Create the browser window
@@ -36,7 +30,7 @@ async function createWindow() {
 
       // Install React DevTools
       try {
-        await installExtension(REACT_DEVELOPER_TOOLS);
+        await electronDevtools.default(electronDevtools.REACT_DEVELOPER_TOOLS);
         console.log('Added React DevTools');
       } catch (err) {
         console.log('An error occurred adding React DevTools: ', err);
@@ -47,7 +41,7 @@ async function createWindow() {
   } else {
     // Production mode
     try {
-      await mainWindow.loadFile(join(__dirname, '../dist/index.html'));
+      await mainWindow.loadFile(join(process.cwd(), 'dist/index.html'));
     } catch (err) {
       console.error('Failed to load app:', err);
     }
