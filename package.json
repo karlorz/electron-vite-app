@@ -35,7 +35,7 @@
       "dist-electron/**/*"
     ],
     "extraMetadata": {
-      "main": "dist-electron/main.js"
+      "main": "dist-electron/electron/main.js"
     },
     "mac": {
       "category": "public.app-category.developer-tools"
