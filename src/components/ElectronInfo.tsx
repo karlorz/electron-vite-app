@@ -1,63 +1,64 @@
 import { useState, useEffect } from 'react';
+import type { AppInfo } from '../electron';
 
-interface AppInfo {
-  version: string;
-  name: string;
-  electron: string;
-  chrome: string;
-  node: string;
-}
-
-export function ElectronInfo() {
-  const [appInfo, setAppInfo] = useState<AppInfo | null>(null);
+function ElectronInfo() {
+  const [isElectron, setIsElectron] = useState(false);
+  const [info, setInfo] = useState<AppInfo>({
+    platform: 'web',
+    versions: {
+      node: '-',
+      chrome: '-',
+      electron: '-'
+    }
+  });
 
   useEffect(() => {
-    const getInfo = async () => {
+    const loadInfo = async () => {
       try {
-        if (window.electron) {
-          const info = await window.electron.getAppInfo();
-          setAppInfo(info);
+        if (window.electron?.isElectron) {
+          setIsElectron(true);
+          const appInfo = await window.electron.getAppInfo();
+          setInfo(appInfo);
         }
-      } catch (err) {
-        console.error('Failed to get app info:', err);
+      } catch (error) {
+        console.error('Failed to load electron info:', error);
       }
     };
 
-    getInfo();
+    loadInfo();
   }, []);
-
-  if (!appInfo) {
-    return null;
-  }
 
   return (
     <div className="electron-info">
-      <h2>Electron App Info</h2>
+      <h2>App Info</h2>
+      <p>Electron + Vite + React</p>
       <div className="info-grid">
-        <div className="info-item">
-          <strong>App Name:</strong>
-          <span>{appInfo.name}</span>
-        </div>
-        <div className="info-item">
-          <strong>Version:</strong>
-          <span>{appInfo.version}</span>
-        </div>
-        <div className="info-item">
-          <strong>Electron:</strong>
-          <span>{appInfo.electron}</span>
-        </div>
-        <div className="info-item">
-          <strong>Chrome:</strong>
-          <span>{appInfo.chrome}</span>
-        </div>
-        <div className="info-item">
-          <strong>Node:</strong>
-          <span>{appInfo.node}</span>
-        </div>
-        <div className="info-item">
-          <strong>Platform:</strong>
-          <span>{window.electron?.platform}</span>
-        </div>
+        {isElectron ? (
+          <>
+            <div className="info-item">
+              <strong>Platform:</strong>
+              <span>{info.platform}</span>
+            </div>
+            <div className="info-item">
+              <strong>Electron:</strong>
+              <span>{info.versions.electron}</span>
+            </div>
+            <div className="info-item">
+              <strong>Chrome:</strong>
+              <span>{info.versions.chrome}</span>
+            </div>
+            <div className="info-item">
+              <strong>Node:</strong>
+              <span>{info.versions.node}</span>
+            </div>
+          </>
+        ) : (
+          <div className="info-item web-mode">
+            <strong>Mode:</strong>
+            <span>Web Browser</span>
+            <p className="web-note">Note: Some features are only available in desktop app mode</p>
+          </div>
+        )}
       </div>
 
       <style>{`
@@ -89,7 +90,23 @@ export function ElectronInfo() {
           font-size: 1.1em;
           color: #333;
         }
+
+        .web-mode {
+          grid-column: 1 / -1;
+          text-align: center;
+          background-color: #e8e8e8;
+          padding: 16px;
+          border-radius: 6px;
+        }
+
+        .web-note {
+          margin-top: 8px;
+          font-size: 0.9em;
+          color: #666;
+        }
       `}</style>
     </div>
   );
-};
+}
+
+export default ElectronInfo;

@@ -26,7 +26,8 @@
       "@testing-library/jest-dom",
       "vite/client"
     ],
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src",

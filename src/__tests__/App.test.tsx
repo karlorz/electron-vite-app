@@ -25,11 +25,13 @@ describe('App', () => {
     expect(container).toBeTruthy();
   });
 
-  it('contains ElectronInfo component', async () => {
+  it('contains ElectronInfo component in web mode', async () => {
     await act(async () => {
       render(<App />);
     });
-    const titleElement = screen.getByText(/Electron \+ Vite \+ React/i);
-    expect(titleElement).toBeInTheDocument();
+    // Check for basic elements that should be present in web mode
+    expect(screen.getByText(/Electron \+ Vite \+ React/i)).toBeInTheDocument();
+    expect(screen.getByText(/Web Browser/i)).toBeInTheDocument();
+    expect(screen.getByText(/Some features are only available in desktop app mode/i)).toBeInTheDocument();
   });
 });

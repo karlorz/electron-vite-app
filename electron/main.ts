@@ -2,20 +2,33 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'node:path';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Determine preload path based on environment
+const isDev = process.env.NODE_ENV === 'development' && process.env.ELECTRON === 'true';
+const preloadPath = isDev
+  ? join(__dirname, 'preload.js')
+  : join(__dirname, 'preload.js');
+
 async function createWindow() {
   // Create the browser window
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: true,
-      preload: join(__dirname, '../dist-electron/preload.js'),  // updated preload file reference
+      preload: preloadPath,
+      sandbox: false
     },
   });
 
   // Load the app
-  if (process.env.NODE_ENV === 'development') {
+  if (isDev) {
     // Development mode
     try {
       await mainWindow.loadURL('http://localhost:5173');

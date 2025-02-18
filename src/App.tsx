@@ -1,8 +1,12 @@
 import React from 'react';
+import ElectronInfo from './components/ElectronInfo';
 
 function App() {
   return (
-    <h1>Hello World</h1>
+    <div>
+      <h1>Welcome to your application!</h1>
+      <ElectronInfo />
+    </div>
   );
 }
 
